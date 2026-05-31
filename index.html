@@ -1,46 +1,262 @@
 <!DOCTYPE html>
 <html lang="ku" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شێخ دیکۆر - Shex Dekoor</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        .container {
-            text-align: center;
-            padding: 3rem;
-            background: #1e293b;
-            border-radius: 16px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-            max-width: 500px;
-            width: 90%;
-        }
-        h1 { 
-            color: #38bdf8; 
-            margin-bottom: 1rem;
-            font-size: 2.5rem;
-        }
-        p {
-            color: #94a3b8;
-            font-size: 1.2rem;
-            line-height: 1.6;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Creator Studio | ستودیۆی دروستکاری AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>شێخ دیکۆر</h1>
-        <p>پڕۆژەکە بە سەرکەوتوویی لەسەر سێرڤەری ڕێڵوەی جێگیرکرا و بەم زووانە تەواو دەبێت!</p>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<!-- NOISE OVERLAY -->
+<div class="noise"></div>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="logo">
+    <span class="logo-icon">⬡</span>
+    <span class="logo-text" data-ku="ستودیۆی AI" data-ar="ستوديو الذكاء الاصطناعي" data-en="AI Studio">ستودیۆی AI</span>
+  </div>
+  <nav>
+    <button class="lang-btn active" data-lang="ku">کوردی</button>
+    <button class="lang-btn" data-lang="ar">عربي</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    <div class="grid-lines"></div>
+  </div>
+  <div class="hero-content">
+    <div class="badge" data-ku="بەهێزکراوی AI" data-ar="مدعوم بالذكاء الاصطناعي" data-en="AI Powered">بەهێزکراوی AI</div>
+    <h1 class="hero-title">
+      <span class="line1" data-ku="دروستکاری" data-ar="إبداع" data-en="Create">دروستکاری</span>
+      <span class="line2 gradient-text" data-ku="بەبێ سنوور" data-ar="بلا حدود" data-en="Without Limits">بەبێ سنوور</span>
+    </h1>
+    <p class="hero-sub" data-ku="وێنە و ڤیدیۆی شیاو دروست بکە بە یەک کلیک" data-ar="أنشئ صوراً ومقاطع فيديو مذهلة بنقرة واحدة" data-en="Generate stunning images and videos with one click">وێنە و ڤیدیۆی شیاو دروست بکە بە یەک کلیک</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="scrollToStudio()">
+        <span data-ku="دەستپێبکە" data-ar="ابدأ الآن" data-en="Get Started">دەستپێبکە</span>
+        <span class="btn-arrow">↓</span>
+      </button>
     </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">14+</span><span class="stat-label" data-ku="دابینکەر" data-ar="مزود" data-en="Providers">دابینکەر</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num">800M</span><span class="stat-label" data-ku="تۆکن/مانگ" data-ar="رمز/شهر" data-en="Tokens/Mo">تۆکن/مانگ</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-num">∞</span><span class="stat-label" data-ku="دەرئەنجام" data-ar="نتائج" data-en="Results">دەرئەنجام</span></div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span data-ku="بخوڵبدە" data-ar="مرر للأسفل" data-en="Scroll">بخوڵبدە</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- STUDIO SECTION -->
+<section class="studio" id="studio">
+  <div class="section-label" data-ku="ستودیۆ" data-ar="الاستوديو" data-en="Studio">ستودیۆ</div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" data-tab="image">
+      <span class="tab-icon">🎨</span>
+      <span data-ku="دروستکردنی وێنە" data-ar="توليد الصور" data-en="Image Generation">دروستکردنی وێنە</span>
+    </button>
+    <button class="tab" data-tab="video">
+      <span class="tab-icon">🎬</span>
+      <span data-ku="دروستکردنی ڤیدیۆ" data-ar="توليد الفيديو" data-en="Video Generation">دروستکردنی ڤیدیۆ</span>
+    </button>
+  </div>
+
+  <!-- IMAGE TAB -->
+  <div class="tab-content active" id="tab-image">
+    <div class="studio-grid">
+      <div class="input-panel">
+        <div class="panel-header">
+          <h3 data-ku="وەسف بکە" data-ar="اوصف ما تريد" data-en="Describe Your Vision">وەسف بکە</h3>
+        </div>
+
+        <div class="prompt-area">
+          <textarea id="imagePrompt" placeholder="وەسفی وێنەکەت بنووسە..." rows="4"></textarea>
+          <div class="prompt-actions">
+            <button class="btn-magic" onclick="enhancePrompt('image')" title="Enhance">
+              <span>✦</span>
+              <span data-ku="باشترکردن" data-ar="تحسين" data-en="Enhance">باشترکردن</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="style-grid">
+          <h4 data-ku="شێواز" data-ar="الأسلوب" data-en="Style">شێواز</h4>
+          <div class="style-pills" id="imageStyles">
+            <button class="style-pill active" data-style="photorealistic">📸 Photorealistic</button>
+            <button class="style-pill" data-style="digital art">🎨 Digital Art</button>
+            <button class="style-pill" data-style="cinematic">🎬 Cinematic</button>
+            <button class="style-pill" data-style="anime">✨ Anime</button>
+            <button class="style-pill" data-style="oil painting">🖼️ Oil Painting</button>
+            <button class="style-pill" data-style="watercolor">💧 Watercolor</button>
+            <button class="style-pill" data-style="3D render">🔮 3D Render</button>
+            <button class="style-pill" data-style="sketch">✏️ Sketch</button>
+          </div>
+        </div>
+
+        <div class="settings-row">
+          <div class="setting-item">
+            <label data-ku="قەبارە" data-ar="الحجم" data-en="Size">قەبارە</label>
+            <select id="imageSize">
+              <option value="1024x1024">1024×1024 ◼</option>
+              <option value="1792x1024">1792×1024 ▬ Wide</option>
+              <option value="1024x1792">1024×1792 ▮ Portrait</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label data-ku="ژمارە" data-ar="العدد" data-en="Count">ژمارە</label>
+            <select id="imageCount">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-generate" id="generateImageBtn" onclick="generateImage()">
+          <span class="btn-glow"></span>
+          <span class="btn-text" data-ku="دروستکردن" data-ar="توليد" data-en="Generate">دروستکردن</span>
+          <span class="btn-loader hidden">⟳</span>
+        </button>
+      </div>
+
+      <div class="output-panel" id="imageOutput">
+        <div class="output-empty">
+          <div class="empty-icon">⬡</div>
+          <p data-ku="دروستکراوەکانت ئێرە دەردەکەون" data-ar="ستظهر نتائجك هنا" data-en="Your creations will appear here">دروستکراوەکانت ئێرە دەردەکەون</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIDEO TAB -->
+  <div class="tab-content" id="tab-video">
+    <div class="studio-grid">
+      <div class="input-panel">
+        <div class="panel-header">
+          <h3 data-ku="ڤیدیۆکەت وەسف بکە" data-ar="صف مقطعك" data-en="Describe Your Video">ڤیدیۆکەت وەسف بکە</h3>
+        </div>
+
+        <div class="prompt-area">
+          <textarea id="videoPrompt" placeholder="ڤیدیۆی دەتەوێت وەسفی بکە..." rows="4"></textarea>
+          <div class="prompt-actions">
+            <button class="btn-magic" onclick="enhancePrompt('video')">
+              <span>✦</span>
+              <span data-ku="باشترکردن" data-ar="تحسين" data-en="Enhance">باشترکردن</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="style-grid">
+          <h4 data-ku="شێوازی ڤیدیۆ" data-ar="نمط الفيديو" data-en="Video Style">شێوازی ڤیدیۆ</h4>
+          <div class="style-pills" id="videoStyles">
+            <button class="style-pill active" data-style="cinematic">🎬 Cinematic</button>
+            <button class="style-pill" data-style="documentary">📹 Documentary</button>
+            <button class="style-pill" data-style="animation">✨ Animation</button>
+            <button class="style-pill" data-style="time-lapse">⏱ Time-lapse</button>
+            <button class="style-pill" data-style="slow motion">🌊 Slow Motion</button>
+            <button class="style-pill" data-style="aerial">🚁 Aerial</button>
+          </div>
+        </div>
+
+        <div class="settings-row">
+          <div class="setting-item">
+            <label data-ku="درێژی" data-ar="المدة" data-en="Duration">درێژی</label>
+            <select id="videoDuration">
+              <option value="5">5s</option>
+              <option value="10">10s</option>
+              <option value="15">15s</option>
+              <option value="30">30s</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label data-ku="خوێندەوار" data-ar="الجودة" data-en="Quality">خوێندەوار</label>
+            <select id="videoQuality">
+              <option value="HD">HD</option>
+              <option value="4K">4K</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="video-note">
+          <span class="note-icon">ℹ</span>
+          <span data-ku="ڤیدیۆ بە AI دروست دەکرێت و پیشانی تەسویر و شرۆڤەکانی دەدات" data-ar="يتم إنشاء الفيديو بواسطة الذكاء الاصطناعي مع وصف تفصيلي" data-en="Video is AI-generated with detailed visual description and storyboard">ڤیدیۆ بە AI دروست دەکرێت و پیشانی تەسویر و شرۆڤەکانی دەدات</span>
+        </div>
+
+        <button class="btn-generate" id="generateVideoBtn" onclick="generateVideo()">
+          <span class="btn-glow"></span>
+          <span class="btn-text" data-ku="دروستکردنی ڤیدیۆ" data-ar="توليد الفيديو" data-en="Generate Video">دروستکردنی ڤیدیۆ</span>
+          <span class="btn-loader hidden">⟳</span>
+        </button>
+      </div>
+
+      <div class="output-panel" id="videoOutput">
+        <div class="output-empty">
+          <div class="empty-icon">▶</div>
+          <p data-ku="ڤیدیۆکانت ئێرە دەردەکەون" data-ar="ستظهر مقاطعك هنا" data-en="Your videos will appear here">ڤیدیۆکانت ئێرە دەردەکەون</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY SECTION -->
+<section class="gallery-section" id="gallery">
+  <div class="section-label" data-ku="گاڵەری" data-ar="المعرض" data-en="Gallery">گاڵەری</div>
+  <h2 data-ku="دروستکراوەکانی ئێگەر" data-ar="آخر الإبداعات" data-en="Recent Creations">دروستکراوەکانی ئێگەر</h2>
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="gallery-empty">
+      <p data-ku="هێشتا هیچ دروستنەکراوە. دەستپێبکە!" data-ar="لا يوجد شيء بعد. ابدأ الإنشاء!" data-en="Nothing yet. Start creating!">هێشتا هیچ دروستنەکراوە. دەستپێبکە!</p>
+    </div>
+  </div>
+</section>
+
+<!-- API CONFIG MODAL -->
+<div class="modal-overlay" id="apiModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeApiModal()">✕</button>
+    <h3 data-ku="ڕێکخستنی API" data-ar="إعداد API" data-en="API Configuration">ڕێکخستنی API</h3>
+    <p data-ku="ئادرەسی سیرڤەرەکەت بنووسە" data-ar="أدخل عنوان الخادم" data-en="Enter your server address">ئادرەسی سیرڤەرەکەت بنووسە</p>
+    <div class="modal-input-group">
+      <label>Server URL</label>
+      <input type="text" id="serverUrl" placeholder="https://your-server.netlify.app" />
+    </div>
+    <div class="modal-input-group">
+      <label>API Key</label>
+      <input type="password" id="apiKey" placeholder="freellmapi-..." />
+    </div>
+    <button class="btn-primary full-width" onclick="saveConfig()">
+      <span data-ku="پاراستن" data-ar="حفظ" data-en="Save">پاراستن</span>
+    </button>
+  </div>
+</div>
+
+<!-- CONFIG BTN -->
+<button class="config-btn" onclick="openApiModal()" title="API Settings">⚙</button>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
 </body>
 </html>
